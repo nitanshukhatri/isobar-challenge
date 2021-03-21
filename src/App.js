@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import Table from "./components/Table";
+import Cart from "./components/cart";
+import React, { useState } from "react";
+import LoginModal from "./modal/loginmodal";
+
+export const cartContext = React.createContext();
 
 function App() {
+  const [items, setCartItem] = useState([]);
+  const [modalIsOpen, setModal] = useState(false);
+  const cartChanged = (items) => {
+    setCartItem(items);
+  };
+  const closeModal = () => {
+    setModal(false);
+  };
+  const openModal = () => {
+    setModal(true);
+    console.log(modalIsOpen);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <cartContext.Provider value={"hello"}>
+      <div className="App">
+        <Table cartItemChange={cartChanged} cartItems={items} openModal={openModal} />
+        <Cart cartItems={items} />
+        <LoginModal modalIsOpen={modalIsOpen} closeModal={closeModal}></LoginModal>
+      </div>
+    </cartContext.Provider>
   );
 }
 
